@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Home Pagge
+{% endblock title %}
+
+{% block content %}
+
+    <header id="main-navigation">
+        <h1><a href="#">Zohreh's Blog</a></h1>
+        <nav>
+            <a href="#">All Posts</a>
+        </nav>
+    </header>
+    <section id="wellcome">
+        <header>
+            <img src="" alt="Zohreh - ///The Auther Af This Blog">
+            <h1>ZOHREH'S BLOG</h1>
+        </header>
+        <p>Hi! This Is My Blog For Practicing Django </p>
+    </section>
+    <section id="Latest-posts">
+        <h1>My Latest Posts</h1>
+        <ul>
+            <li>
+                <article class="post">
+                    <a href="#">
+                        <img src="" alt="Mountain Hiking">
+                        <div class="post_content">
+                            <h3>Mountain Hiking</h3>
+                            <p>some random text about hiking...</p>
+                        </div>
+                    </a>
+                </article>
+            </li>
+        </ul>
+    </section>    
+    <section id="about">
+        <h2>What i do</h2>
+        <p>I LOve Programing and i realy enjoy sculptucher art! </p>
+    </section>
+{% endblock content %}
