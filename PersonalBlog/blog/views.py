@@ -9,4 +9,4 @@ def postDetail(request,slug):
     pass
 
 def postsList(request):
-    pass
+    return render(request,"blog/all-posts.html")

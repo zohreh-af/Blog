@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block css_file  %}
+  <link rel="stylesheet" href="{% static 'blog/index.css' %}">
+{% endblock css_file  %}
+
 
 {% block title %}
     Home Pagge
@@ -12,27 +18,13 @@
             <a href="#">All Posts</a>
         </nav>
     </header>
-    <section id="wellcome">
-        <header>
-            <img src="" alt="Zohreh - ///The Auther Af This Blog">
-            <h1>ZOHREH'S BLOG</h1>
-        </header>
+    <section id="welcome">
         <p>Hi! This Is My Blog For Practicing Django </p>
     </section>
     <section id="Latest-posts">
         <h1>My Latest Posts</h1>
         <ul>
-            <li>
-                <article class="post">
-                    <a href="#">
-                        <img src="" alt="Mountain Hiking">
-                        <div class="post_content">
-                            <h3>Mountain Hiking</h3>
-                            <p>some random text about hiking...</p>
-                        </div>
-                    </a>
-                </article>
-            </li>
+           {% include "blog/includes/post.html" %}
         </ul>
     </section>    
     <section id="about">

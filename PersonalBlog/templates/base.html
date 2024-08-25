@@ -1,12 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "app.css" %}">
     {% block css_files %}{% endblock css_files %}
 </head>
 <body>
+    <header>
+        <img src="{% static 'blog/images/teacher.png' %}" alt="Zohreh - ///The Auther Af This Blog">
+        <h1>ZOHREH'S BLOG</h1>
+    </header>
+   
     {% block content %}
     {% endblock content %}
 </body>
