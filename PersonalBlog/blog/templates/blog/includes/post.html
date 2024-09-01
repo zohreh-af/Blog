@@ -1,11 +1,13 @@
 {% load static %}
 <li>
     <article class="post">
-        <a href="#">
-            <img src="{% static 'blog/images/Everest.jpg' %}" alt="Mountain Hiking">
+        <a href="{{post.get_absolute_url}}">
+            <img src="{% static 'blog/images/{{post.image}}' %}" alt="{{post.title}}">
+            <!--<img src="{% static 'blog/images/'|add:post.image %}" alt="{{post.title}}">-->
             <div class="post_content">
-                <h3>Mountain Hiking</h3>
-                <p>some random text about hiking...</p>
+                <h3>{{post.title|title}}</h3>
+                <h6> <a href="{{author.get_absolute_url}}">{{[post.author]}}</h6></a>
+                <p>{{post.excrept|truncatwords:20}}</p>
             </div>
         </a>
     </article>

@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block css_file  %}
+  <link rel="stylesheet" href="{% static 'blog/post.css' %}">
   <link rel="stylesheet" href="{% static 'blog/index.css' %}">
 {% endblock css_file  %}
 
@@ -12,11 +13,9 @@
 
 {% block content %}
 
-    <header id="main-navigation">
-        <h1><a href="#">Zohreh's Blog</a></h1>
-        <nav>
-            <a href="#">All Posts</a>
-        </nav>
+    <header>
+        <img src="{% static 'blog/images/teacher.png' %}" alt="Zohreh - ///The Auther Af This Blog">
+        <h1><a href="{% url 'home' %}">ZOHREH'S BLOG</a></h1>
     </header>
     <section id="welcome">
         <p>Hi! This Is My Blog For Practicing Django </p>
@@ -24,7 +23,9 @@
     <section id="Latest-posts">
         <h1>My Latest Posts</h1>
         <ul>
-           {% include "blog/includes/post.html" %}
+            {% for post in posts %}
+                {% include "blog/includes/post.html" %}
+            {% endfor %}
         </ul>
     </section>    
     <section id="about">

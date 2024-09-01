@@ -6,7 +6,10 @@ def home_page(request):
 
 
 def postDetail(request,slug):
-    pass
+    return render(request,"blog/post-detail.html")
 
 def postsList(request):
     return render(request,"blog/all-posts.html")
+
+def authorDetail(request):
+    pass

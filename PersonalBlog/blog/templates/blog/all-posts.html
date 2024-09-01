@@ -7,7 +7,7 @@
 
 
 {% block css_files %}
-  <link rel="stylesheet" href="{% static 'bolg/index.css' %}">
+  <link rel="stylesheet" href="{% static 'bolg/all-posts.css' %}">
 {% endblock css_files %}
 
 
@@ -16,12 +16,10 @@
   <section id="all-posts">
     <h2>My Collected Posts</h2>
     <ul>
-        {% include "blog/includes/post.html" %}
-        {% include "blog/includes/post.html" %}
-        {% include "blog/includes/post.html" %}
-        {% include "blog/includes/post.html" %}
-        {% include "blog/includes/post.html" %}
-        {% include "blog/includes/post.html" %}
+       {% for post in posts %}
+          {% include "blog/includes/post.html" %}
+       {% endfor %}
+        
     </ul>
   </section>
 {% endblock content %}
