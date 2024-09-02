@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block title %}
+  {{author.name|title}}
+{% endblock title %}
+
+
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'bolg/all-posts.css' %}">
+{% endblock css_files %}
+
+
+
+{% block content %}
+  <section id="summary">
+    <h2>{{author.name|title}}</h2>
+    <article>
+        <img src="{% static 'blog/images/{{author.image}}' %}" alt="{{author.name}}">
+        <address> {{author.name|title}}</address>
+        <div>
+            <section id="Latest-posts">
+                <h1>{{author.name}} Latest Posts</h1>
+                <ul>
+                    {% for post in posts %}
+                        {% include "blog/includes/post.html" %}
+                    {% endfor %}
+                </ul>
+            </section>    
+        </div>
+    </article>
+  </section>
+  <main>
+    {{post.content|linebreaks}}
+  </main>
+{% endblock content %}
