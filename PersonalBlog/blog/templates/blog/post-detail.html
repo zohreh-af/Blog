@@ -18,6 +18,11 @@
 {% block content %}
   <section id="summary">
     <h2>{{post.title|title}}</h2>
+    <div>
+        {% for tag in tags %}
+          <span class="tag">{{tag.caption}}</span>
+        {% endfor %}
+    </div>
     <article>
         <img src="{% static 'blog/images/{{post.image}}' %}" alt="{{post.title}}">
         <address>By {{post.author|title}}</address>

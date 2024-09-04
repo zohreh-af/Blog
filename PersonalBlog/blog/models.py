@@ -37,7 +37,7 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=150,null=False,verbose_name="عنوان")
     author = models.ForeignKey("Author", null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="authors")
-    tag = models.ManyToManyField("Tag", verbose_name=("تگ"),)
+    tags = models.ManyToManyField("Tag", verbose_name=("تگ"),)
     slug = models.SlugField(default="",null=False,unique=True,db_index=True,verbose_name="اسلاگ")
     description = models.TextField(validators=[MinValueValidator(10),],verbose_name="متن")
     excrept = models.TextField(max_length=300,verbose_name="تیتر دوم")
