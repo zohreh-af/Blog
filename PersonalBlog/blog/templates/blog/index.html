@@ -1,35 +1,43 @@
-{% extends "base.html" %}
+{% extends "base.html"  %} 
 {% load static %}
 
-{% block css_file  %}
-  <link rel="stylesheet" href="{% static 'blog/post.css' %}">
-  <link rel="stylesheet" href="{% static 'blog/index.css' %}">
-{% endblock css_file  %}
+{% block title %} 
+My Blog 
+{% endblock %} 
 
-
-{% block title %}
-    Home Pagge
-{% endblock title %}
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'blog/post.css'  %}" />
+  <link rel="stylesheet" href="{% static 'blog/index.css'  %}" />
+{% endblock %}
 
 {% block content %}
+<section id="welcome">
+  <header>
+    <img src="{% static 'blog/images/teacher.png' %}" alt="Max - The Author Of This Blog" />
+    <h2>MAXIMILIAN'S BLOG</h2>
+  </header>
+  <p>Hi, I am Max and I love to blog about tech and the world!</p>
+</section>
 
-    <header>
-        <img src="{% static 'blog/images/teacher.png' %}" alt="Zohreh - ///The Auther Af This Blog">
-        <h1><a href="{% url 'home' %}">ZOHREH'S BLOG</a></h1>
-    </header>
-    <section id="welcome">
-        <p>Hi! This Is My Blog For Practicing Django </p>
-    </section>
-    <section id="Latest-posts">
-        <h1>My Latest Posts</h1>
-        <ul>
-            {% for post in posts %}
-                {% include "blog/includes/post.html" %}
-            {% endfor %}
-        </ul>
-    </section>    
-    <section id="about">
-        <h2>What i do</h2>
-        <p>I LOve Programing and i realy enjoy sculptucher art! </p>
-    </section>
-{% endblock content %}
+<section id="latest-posts">
+  <h2>My Latest Thoughts</h2>
+
+  <ul>
+    {% for post in posts %}
+      {% include "blog/includes/post.html"  %}
+    {% endfor %}
+  </ul>
+</section>
+
+<section id="about">
+  <h2>What I Do</h2>
+  <p>
+    I love programming, I love to help others and I enjoy exploring new
+    technologies in general!
+  </p>
+  <p>
+    My goal is to keep on growing as a developer - and if I could help you do
+    the same, I'd be very happy!
+  </p>
+</section>
+{% endblock %}
