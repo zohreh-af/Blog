@@ -16,6 +16,6 @@ admin.site.register(Tag)
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug" : ("title",)}
-    list_filter = ["published","author","tag"]
+    list_filter = ["published","author","tags"]
     list_display = ["title","author","slug"]
     

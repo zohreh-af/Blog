@@ -4,7 +4,7 @@ from .models import Author, Post,Tag
 
 # Create your views here.
 def home_page(request):
-    post = Post.object.order_by('-updated')[:3]
+    post = Post.objects.order_by('-updated')[:3]
     return render(request,"blog/index.html",{"posts":post})
 
 
@@ -16,7 +16,7 @@ def postDetail(request,slug):
                    })
 
 def postsList(request):
-    post = Post.object.all().order_by('-updated')
+    post = Post.objects.all().order_by('-updated')
     return render(request,"blog/all-posts.html",{"posts":post})
 
 def authorDetail(request,id):
