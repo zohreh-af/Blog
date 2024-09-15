@@ -1,14 +1,15 @@
-{% load static %}
 <li>
     <article class="post">
-        <a href="{{post.get_absolute_url}}">
-            <img src="{% static 'blog/images/{{post.image}}' %}" alt="{{post.title}}">
-            <!--<img src="{% static 'blog/images/'|add:post.image %}" alt="{{post.title}}">-->
-            <div class="post_content">
-                <h3>{{post.title|title}}</h3>
-                <h6> <a href="{{author.get_absolute_url}}">{{[post.author]}}</h6></a>
-                <p>{{post.excrept|truncatwords:20}}</p>
-            </div>
-        </a>
+      <a href="{{post.get_absolute_url}}">
+        <img src="{{ post.image.url }}" alt="{{ post.title }}"
+        />
+        <div class="post__content">
+          <h3>{{ post.title|title }}</h3>
+          
+          <p>
+            {{ post.excrept }}
+          </p>
+        </div>
+      </a>
     </article>
-</li>
+  </li>

@@ -17,15 +17,15 @@
 
 {% block content %}
   <section id="summary">
-    <h2>{{author.name|title}}</h2>
+    <h2>{{author.fullname|title}}</h2>
     <article>
-        <img src="{% static 'blog/images/{{author.image}}' %}" alt="{{author.name}}">
-        <address> {{author.name|title}}</address>
+
+        <address> {{author.username}}</address>
         <div>
             <section id="Latest-posts">
-                <h1>{{author.name}} Latest Posts</h1>
+                <h1>{{author.fullname}} Latest Posts</h1>
                 <ul>
-                    {% for post in posts %}
+                    {% for post in authors_posts %}
                         {% include "blog/includes/post.html" %}
                     {% endfor %}
                 </ul>
@@ -33,7 +33,5 @@
         </div>
     </article>
   </section>
-  <main>
-    {{post.content|linebreaks}}
-  </main>
+
 {% endblock content %}

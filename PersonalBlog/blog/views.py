@@ -1,25 +1,38 @@
 from django.shortcuts import get_object_or_404, render
-
+from django.views.generic import DetailView,TemplateView,ListView
 from .models import Author, Post,Tag
 
-# Create your views here.
-def home_page(request):
-    post = Post.objects.order_by('-updated')[:3]
-    return render(request,"blog/index.html",{"posts":post})
 
+class HomepageListView(ListView):
+    template_name = "blog/index.html"
+    model = Post
+    context_object_name = "posts"
+    ordering = ["-updated"]
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        data = queryset[:3]
+        return data
+    
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "blog/post-detail.html.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post_tags"] = self.object.tag.all()
+        return context
+    #dont worry about slug :D 
+class PostListView(ListView):
+    model = Post
+    ordering = ["-updated"]
+    context_object_name = "posts"
+    template_name = "blog/all-posts.html.html"
 
-def postDetail(request,slug):
-    post = get_object_or_404(Post,slug)
-    return render(request,"blog/post-detail.html",
-                  {"post":post,
-                   "tags":post.tags.all(),
-                   })
-
-def postsList(request):
-    post = Post.objects.all().order_by('-updated')
-    return render(request,"blog/all-posts.html",{"posts":post})
-
-def authorDetail(request,id):
-    author = get_object_or_404(Author,id)
-    posts = Post.authors.all().order_by("-published")
-    return render(request,"blog/auther-detail.html",{"author":author,"posts":posts})
+class AuthorDetailView(DetailView):
+    model = Author
+    template_name = "blog/auther-detail.html.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context["authors_posts"] = Post.objects.filter(author = self.id).order_by("-published")
+        context["authors_posts"] = Post.authors.all().order_by("-published")
+        return context
+    
