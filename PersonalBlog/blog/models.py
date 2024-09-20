@@ -55,15 +55,17 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("post_detail", kwargs={"slug": self.slug})
 
+class Comment(models.Model):
+    username = models.CharField( max_length=120,verbose_name="نویسنده")
+    post = models.ForeignKey("Post",related_name="comments" ,verbose_name=("پست "), on_delete=models.CASCADE)#manyToOne
+    comment = models.TextField(verbose_name="متن کامنت")
 
-class ModelName(models.Model):
-    
 
     def __str__(self):
-        pass
+        return self.username - self.post__title
 
     class Meta:
         db_table = ''
         managed = True
-        verbose_name = 'ModelName'
-        verbose_name_plural = 'ModelNames'
+        verbose_name = 'کامنت'
+        verbose_name_plural = 'کامنت ها'
