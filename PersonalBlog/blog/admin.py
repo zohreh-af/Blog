@@ -16,8 +16,6 @@ class CommentAdmin(admin.ModelAdmin):
 
 admin.site.register(Tag)
 
-admin.site.register(Comment)
-
     
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):

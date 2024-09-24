@@ -20,17 +20,22 @@ class HomepageListView(ListView):
 class PostDetailView(View):
     
     def get(self,request,slug):
+        favorite_id = request.session["fave_post"]
         post = Post.objects.get(slug=slug)
+        is_favorite = favorite_id==str(post.id)
         context = {
             "post":post,
             "comment_form":CommentForm(),
             "post_tags":post.tags.all(),
-            "comments":post.comments.all()
+            "comments":post.comments.all(),
+            "is_favorite":is_favorite,
             
             }
         return render (request,"blog/post-detail.html.html",context)
     def post(self,request,slug):
         post = Post.objects.get(slug=slug)
+        #post_id = request.POST["post_id"]
+        request.session["fave_post"] = post.id
         context = {
             "post":post,
             "comment_form":CommentForm(),
