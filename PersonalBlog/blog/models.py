@@ -53,7 +53,7 @@ class Post(models.Model):
         return f"{self.title} - {self.author}"
 
     def get_absolute_url(self):
-        return reverse("post_detail", kwargs={"slug": self.slug})
+        return reverse("blog:post_detail", kwargs={"slug": self.slug})
 
 class Comment(models.Model):
     username = models.CharField( max_length=120,verbose_name="نویسنده")

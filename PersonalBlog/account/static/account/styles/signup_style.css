@@ -1,0 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arvo; }
+
+main {
+  background-color: #C8E0FF; }
+
+span {
+  font-size: 12px; }
+
+input {
+  outline: 0 !important;
+  border-width: 0 0 1px !important;
+  border-radius: 0 !important;
+  border-color: #5277D8 !important; }
+
+::placeholder {
+  color: #5277d852;
+  opacity: 1; }
+
+.radiuss {
+  border-radius: 10% 0 0 10%; }
+
+.text-darkblue {
+  color: #304479; }
+
+.text-blue {
+  color: #5277D8; }
+
+.text-grey {
+  color: #00000052; }
+
+.text-red {
+  color: #FF2E00; }
+
+.text-lightblue1 {
+  color: #5277d852; }
+
+.text-lightblue2 {
+  color: #5277d880; }
+
+.bcolor-blue {
+  border: 2px solid #5277D8; }
+
+.bg-blue {
+  background-color: #5277D8 !important; }
+
+@font-face {
+  font-family: "Arvo";
+  src: url(../Font/Arvo.ttf); }
+
+@font-face {
+  font-family: "Arvo";
+  src: url(../Font/Arvo.eot); }
+
+@font-face {
+  font-family: "Arvo";
+  src: url(../Font/Arvo.woff); }
+
+@font-face {
+  font-family: "Arvo";
+  src: url(../Font/Arvo.woff2); }
