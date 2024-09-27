@@ -50,7 +50,11 @@ class DashboardView(LoginRequiredMixin,TemplateView):
 class UserLoginView(View):
     class_form = UserLoginForm
     class_template = "account/login.html"
-
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("account:dashboar")
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self,request):
         form = self.class_form()
         return render(request,self.class_template,{'form':form})
