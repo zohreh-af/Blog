@@ -1,15 +1,15 @@
 from pyexpat.errors import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views import View,TemplateView
+from django.views import View
+from django.views.generic.base import TemplateView
 from django.views.generic import CreateView
-from .forms import UserRegisterForm, UserRegisterationForm
+from .forms import UserRegisterForm, UserLoginForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserLoginForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 class UserRegisterView(View):
-    class_form = UserRegisterationForm
+    class_form = UserRegisterForm
     class_template = "account/register.html"
 
     def get(self,request):

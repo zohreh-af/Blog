@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 class UserRegisterForm(UserCreationForm):
-    password2 = forms.CharField(label= "confirm your password",widget=[forms.PasswordInput])
+    password2 = forms.CharField(label= "confirm your password",widget=forms.PasswordInput)
     password = forms.CharField(label="password",widget=forms.PasswordInput)
 
     class Meta:
@@ -17,3 +17,8 @@ class UserRegisterForm(UserCreationForm):
         if password and password2 and password2 != password:
             raise forms.ValidationError("Passwords do not match with each other!")
         return password
+    
+    
+class UserLoginForm(forms.Form):
+	username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+	password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
