@@ -12,8 +12,9 @@
 </head>
 <body>
   <header id="main-navigation">
-    <h1><a href="{% url 'blog:home'  %}">Max' Blog</a></h1>
-    
+    {% extends "inc/nav.html" %}
+    <h1><a href="{% url 'blog:home'  %}">Zohreh's Blog</a></h1>
+
   </header>
 
   {% block content %}
