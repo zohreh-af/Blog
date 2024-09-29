@@ -19,7 +19,7 @@ class UserRegisterView(View):
         form = self.class_form(request.POST)
         if form.is_valid():
             cd=form.cleaned_data
-            User.Objects.crea_user(cd['username'],cd['email'],cd['password'])
+            User.Objects.create_user(cd['username'],cd['email'],cd['password'])
             messages.success(request,"successfully signed up!!",'success')
             return redirect('account:dashboard')
         return render(request,self.class_template,{'form':form}) 
@@ -43,8 +43,12 @@ class SignUpView(CreateView):
 
 
 
-class DashboardView(LoginRequiredMixin,TemplateView):
-    template_name = "dashboard.html"
+class DashboardView(LoginRequiredMixin,View):
+    class_template = "account/dashboard.html"
+    def get(self,request,user_id):
+        posts = User.Objects.filter(id=user_id)
+        return render(request,self.class_template,{'posts':posts})
+    
 
 
 class UserLoginView(View):

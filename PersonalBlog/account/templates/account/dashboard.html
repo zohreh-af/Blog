@@ -1,15 +1,37 @@
-{% extends "base.html"  %} 
+{% extends "base.html"  %}
 {% load static %}
 
-{% block title %} 
-dashboard 
-{% endblock %} 
+
+
+{% block title %}
+  {{author.name|title}}
+{% endblock title %}
+
+
 
 {% block css_files %}
-  
-  <link rel="stylesheet" href="{% static 'blog/index.css'  %}" />
-{% endblock %}
+  <link rel="stylesheet" href="{% static 'bolg/all-posts.css' %}">
+{% endblock css_files %}
+
+
 
 {% block content %}
-for dashboard
-{% endblock %}
+  <section id="summary">
+    <h2>{{author.fullname|title}}</h2>
+    <article>
+
+        <address> {{author.username}}</address>
+        <div>
+            <section id="Latest-posts">
+                <h1>{{author.fullname}} Latest Posts</h1>
+                <ul>
+                    {% for post in posts %}
+                        {% include "blog/includes/post.html" %}
+                    {% endfor %}
+                </ul>
+            </section>    
+        </div>
+    </article>
+  </section>
+
+{% endblock content %}

@@ -133,3 +133,6 @@ MEDIA_ROOT = BASE_DIR / "upload"
 MEDIA_URL = "/files/"
 
 LOGIN_URL = "account/login"
+AUTHENTICATION_BACKENDS = [
+"django.contrib.auth.backends.ModelBackend",
+    "account.authentication.EmailBackend"]
