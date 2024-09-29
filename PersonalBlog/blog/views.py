@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.generic import DetailView,TemplateView,ListView
-from .models import Author, Post,Tag
+from .models import  Post,Tag
 from .forms import CommentForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from account.models import User as Author
 
 class HomepageListView(ListView):
     template_name = "blog/index.html"
@@ -61,13 +62,3 @@ class PostListView(ListView):
     ordering = ["-updated"]
     context_object_name = "posts"
     template_name = "blog/all-posts.html.html"
-
-class AuthorDetailView(DetailView):
-    model = Author
-    template_name = "blog/auther-detail.html.html"
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        #context["authors_posts"] = Post.objects.filter(author = self.id).order_by("-published")
-        context["authors_posts"] = Post.authors.all().order_by("-published")
-        return context
-    
