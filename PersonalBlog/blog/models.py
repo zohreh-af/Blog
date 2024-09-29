@@ -15,8 +15,8 @@ class Tag(models.Model):
         
 class Post(models.Model):
     title = models.CharField(max_length=150,null=False,verbose_name="عنوان")
-    user = models.ForeignKey("User", null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="authors")
-    tags = models.ManyToManyField("Tag", verbose_name=("تگ"),)
+    user = models.ForeignKey(User, null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="authors")
+    tags = models.ManyToManyField(Tag, verbose_name=("تگ"),)
     slug = models.SlugField(default="",null=False,unique=True,db_index=True,verbose_name="اسلاگ")
     excrept = models.TextField(max_length=300,verbose_name="تیتر دوم")
     description = models.TextField(verbose_name="متن")
@@ -36,8 +36,8 @@ class Post(models.Model):
         return reverse("blog:post_detail", kwargs={"slug": self.slug})
 
 class Comment(models.Model):
-    user = models.ForeignKey("User", null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="usercomments")
-    post = models.ForeignKey("Post",related_name="postcomments" ,verbose_name=("پست "), on_delete=models.CASCADE)#manyToOne
+    user = models.ForeignKey(User, null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="usercomments")
+    post = models.ForeignKey(Post,related_name="postcomments" ,verbose_name=("پست "), on_delete=models.CASCADE)#manyToOne
     comment = models.TextField(verbose_name="متن کامنت")
 
 

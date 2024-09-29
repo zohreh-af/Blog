@@ -6,17 +6,12 @@ class CommentForm(forms.ModelForm):
     
     class Meta:
         model = Comment
-        exclude = ["post"]
+        exclude = ["post","user"]
         labels = {
-            "username": _("Your username:"),
+            
             "comment":_("Your comment:"),
         }
-        error_messages = {
-            "username": {
-                "max_length": _("This username is too long."),
-
-            },
-        }
+        
         help_texts = {
             "comment": _("What is your comment?."),
         }

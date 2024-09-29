@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 # Create your models here.
-class User(User):
+class User(AbstractUser):
     
-    username = models.CharField( max_length=50,null=True,verbose_name="یورزنیم ")
+    username = models.CharField( unique=True,max_length=50,null=True,verbose_name="یورزنیم ")
     first_name = models.CharField( max_length=50,verbose_name="نام ")
     last_name = models.CharField( max_length=50,verbose_name="نام خانوادگی")
     email = models.EmailField( max_length=254,verbose_name="ایمیل")
