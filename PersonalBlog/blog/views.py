@@ -98,7 +98,7 @@ class CreatePostView(LoginRequiredMixin,View):
         form = self.class_form(request.POST)
         if form.is_valid():
             new_post = form.save(commit=False)
-            new_post.user = request.user.id
+            new_post.user = request.user
             new_post.slug = slugify(form.cleaned_data['title'])
             new_post.save()
             messages.success(request,"You added a new post!","success")
@@ -129,7 +129,7 @@ class PostUpdateView(LoginRequiredMixin,View):
         form = self.class_form(request.POST,instance=post)
         if form.is_valid():
             new_post = form.save(commit=False)
-            new_post.user = request.user.id
+            new_post.user = request.user
             new_post.slug = slugify(form.cleaned_data['title'][:30])
             new_post.save()
             messages.success(request,"post updated successfully!","success")
