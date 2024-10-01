@@ -1,11 +1,15 @@
-from django.shortcuts import get_object_or_404, render
+from typing import Any
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from django.views.generic import DetailView,TemplateView,ListView
+from django.views.generic import DetailView,TemplateView,ListView,DeleteView
 from .models import  Post,Tag
-from .forms import CommentForm
-from django.http import HttpResponseRedirect
+from .forms import CommentForm, CreatePostForm
+from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
 from account.models import User as Author
+from django.utils.text import slugify
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class HomepageListView(ListView):
     template_name = "blog/index.html"
@@ -62,3 +66,74 @@ class PostListView(ListView):
     ordering = ["-updated"]
     context_object_name = "posts"
     template_name = "blog/all-posts.html.html"
+
+
+# class PostDeleteView(DeleteView):
+#     model = Post
+#     template_name = "post_confirm_delete.html"
+    
+#     def delete(self, request, *args, **kwargs):
+#         messages.success(request, 'The post was deleted successfully!')
+#         return super().delete(request, *args, **kwargs)
+
+
+class PostDeleteView(LoginRequiredMixin,View):
+    def get(self,request,post_id):
+        post = get_object_or_404(Post,pk=post_id)
+        if post.user.id == request.user.id:
+            post.delete()
+            messages.success(request,"post deleted successfully!","success")
+        else:
+            messages.error(request,"you can not delete this post!")
+        return redirect('blog:home')
+
+class CreatePostView(LoginRequiredMixin,View):
+    class_form = CreatePostForm
+    class_template = "blog/create_post.html"
+    def get(self,request):
+        form = self.class_form
+        return render(request,self.class_template,{'form':form})
+    
+    def post(self,request):
+        form = self.class_form(request.POST)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.user = request.user.id
+            new_post.slug = slugify(form.cleaned_data['title'])
+            new_post.save()
+            messages.success(request,"You added a new post!","success")
+            return redirect('blog:post_detail',new_post.slug)
+        messages.error(request,"try again!")
+        return render(request,self.class_template,{'form':self.class_form})
+
+class PostUpdateView(LoginRequiredMixin,View):
+    class_form = CreatePostForm
+    class_template = "blog/create_post.html"
+    def setup(self, request: HttpRequest, *args, **kwargs) :
+        self.post_instance = get_object_or_404(Post,pk=kwargs['post_id'])
+        return super().setup(request, *args, **kwargs)
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.id == self.post.user.id:
+            messages.error(request,"you are not allowed to edit this post!","danger")
+            return redirect("blog:home")
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self,request, *args, **kwargs):
+        post = self.post_instance
+        form = self.class_form(instance=post)
+        return render(request,self.class_template,{"form":form})
+
+    def post(self,request, *args, **kwargs):
+        post = self.post_instance
+        form = self.class_form(request.POST,instance=post)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.user = request.user.id
+            new_post.slug = slugify(form.cleaned_data['title'][:30])
+            new_post.save()
+            messages.success(request,"post updated successfully!","success")
+            return redirect("blog:post_detail",post.slug)
+        
+        
+        

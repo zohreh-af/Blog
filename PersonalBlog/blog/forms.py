@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Post, Tag
 from django.utils.translation import gettext_lazy as _
 
 class CommentForm(forms.ModelForm):
@@ -16,3 +16,8 @@ class CommentForm(forms.ModelForm):
             "comment": _("What is your comment?."),
         }
 
+class CreatePostForm(forms.ModelForm):
+    #tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple, required=True)
+    class Meta:
+        model = Post
+        fields = ("title","excrept","description","image","tags")

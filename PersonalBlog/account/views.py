@@ -38,25 +38,6 @@ class SignUpView(CreateView):
   success_url = reverse_lazy('account:profile')
   form_class = UserRegisterForm
   success_message = "Your profile was created successfully"
-
-  
-  
-class ProfileView(LoginRequiredMixin,View):
-    class_template = "account/profile.html"
-    def get(self,request,user_id):
-        user = get_object_or_404(User,pk=user_id)
-        posts = user.posts.all()
-        return render(request,self.class_template,{'posts':posts,"author":user})
-    
-
-# class ProfileView(LoginRequiredMixin,DetailView):
-#     model = User
-#     template_name = "account/profile.html"
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         #context["authors_posts"] = Post.objects.filter(author = self.id).order_by("-published")
-#         context["posts"] = Post.authors.all().order_by("-published")
-#         return context
     
 
 class UserLoginView(View):
@@ -91,3 +72,22 @@ class UserLogoutView(View):
         return redirect("account:login")
 
 
+
+  
+  
+class ProfileView(LoginRequiredMixin,View):
+    class_template = "account/profile.html"
+    def get(self,request,user_id):
+        user = get_object_or_404(User,pk=user_id)
+        posts = user.posts.all()
+        return render(request,self.class_template,{'posts':posts,"author":user})
+    
+
+# class ProfileView(LoginRequiredMixin,DetailView):
+#     model = User
+#     template_name = "account/profile.html"
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         #context["authors_posts"] = Post.objects.filter(author = self.id).order_by("-published")
+#         context["posts"] = Post.authors.all().order_by("-published")
+#         return context
