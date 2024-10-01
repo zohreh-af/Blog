@@ -17,6 +17,11 @@
 
 {% block content %}
   <section id="summary">
+    
+    {% if request.user.id == user.id %}
+        <a href="{% url 'blog:create_post' %}" class="btn btn-primary">Create</a>
+        
+    {% endif %}
     <h2>{{author.fullname|title}}</h2>
     <article>
 

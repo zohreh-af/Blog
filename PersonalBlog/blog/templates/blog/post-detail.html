@@ -1,16 +1,6 @@
 {% extends "base.html" %} 
 {% load static %} 
-<form action="{{post.get_absolute_url}}" method="post">
-  {% csrf_token %}
-  <input type="hidden" name="post_id" value="{{post.id}}">
-  {% if is_favorite %}
-  <button type="button">&#9829; </i></button>
-  {%else%}
-  <button type="button">&#x2661; </i></button>
-  {% endif %}
-  
-  
-</form>
+
 {% block title %} 
 {{ post.title }}
 {% endblock %} 
@@ -30,7 +20,25 @@
 {% endif %}
 
 <section id="summary">
+  
+  <form action="{{post.get_absolute_url}}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="post_id" value="{{post.id}}">
+    {% if is_favorite %}
+    <button type="button">&#9829; </i></button>
+    {%else%}
+    <button type="button">&#x2661; </i></button>
+    {% endif %}
+    
+    
+  </form>
+
   <h2>{{ post.title }}</h2>
+  
+  {% if request.user.id == post.user.id %}
+  <a href="{% url 'blog:post_delete' post.slug %}" class="btn btn-danger">Delete</a>
+  <a href="{% url 'blog:post_update' post.slug %}" class="btn btn-info">Update</a>
+{% endif %}
   <div>
     {% for tag in post_tags %}
       <span class="tag">{{ tags.caption }}</span>

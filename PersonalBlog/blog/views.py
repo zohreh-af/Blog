@@ -106,7 +106,7 @@ class CreatePostView(LoginRequiredMixin,View):
         messages.error(request,"try again!")
         return render(request,self.class_template,{'form':self.class_form})
 
-class PostUpdateView(LoginRequiredMixin,View):
+class UpdatePostView(LoginRequiredMixin,View):
     class_form = CreatePostForm
     class_template = "blog/create_post.html"
     def setup(self, request: HttpRequest, *args, **kwargs) :
