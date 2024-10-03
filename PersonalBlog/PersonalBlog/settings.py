@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-_#d5@9s809_sc&jzr=ylox)q7bxe4rdm-35%4bv^s3fx&&jk7b
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    os.getenv("APP_HOSTk")
+    #os.getenv("APP_HOSTk")
 ]
 
 
@@ -136,4 +136,4 @@ LOGIN_URL = "account/login"
 AUTHENTICATION_BACKENDS = [
 "django.contrib.auth.backends.ModelBackend",
     "account.authentication.EmailBackend"]
-AUTH_USER_MODEL = 'account.User'
+#AUTH_USER_MODEL = 'account.CostomUser'

@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MaxValueValidator,MinValueValidator
-from account.models import User
+from django.contrib.auth.models import User
 class Tag(models.Model):
     caption = models.CharField(max_length=20)
     def __str__(self):
@@ -15,7 +15,7 @@ class Tag(models.Model):
         
 class Post(models.Model):
     title = models.CharField(max_length=150,null=False,verbose_name="عنوان")
-    user = models.ForeignKey(User, null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="authors")
+    user = models.ForeignKey(User, null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="posts")
     tags = models.ManyToManyField(Tag, verbose_name=("تگ"),)
     slug = models.SlugField(default="",null=False,unique=True,db_index=True,verbose_name="اسلاگ")
     excrept = models.TextField(max_length=300,verbose_name="تیتر دوم")

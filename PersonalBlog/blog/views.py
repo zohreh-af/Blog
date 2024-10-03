@@ -1,4 +1,4 @@
-from typing import Any
+
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -7,7 +7,7 @@ from .models import  Post,Tag
 from .forms import CommentForm, CreatePostForm
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
-from account.models import User as Author
+from django.contrib.auth.models import User 
 from django.utils.text import slugify
 from django.contrib.auth.mixins import LoginRequiredMixin
 

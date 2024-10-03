@@ -17,13 +17,13 @@
 
 {% block content %}
   <section id="summary">
-    <h2>{{author.fullname|title}}</h2>
+    
     <article>
 
         <address> {{author.username}}</address>
         <div>
             <section id="Latest-posts">
-                <h1>{{author.fullname}} Latest Posts</h1>
+                <h1>{{author.username}} Latest Posts</h1>
                 <ul>
                     {% for post in posts %}
                         {% include "blog/includes/post.html" %}
