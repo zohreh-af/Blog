@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import DetailView,TemplateView,ListView,DeleteView
-from .models import  Post,Tag
+from .models import  Post
 from .forms import CommentForm, CreatePostForm
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
@@ -31,7 +31,7 @@ class PostDetailView(View):
         context = {
             "post":post,
             "comment_form":CommentForm(),
-            "post_tags":post.tags.all(),
+            
             "comments":post.comments.all(),
             "is_favorite":is_favorite,
             
@@ -44,7 +44,7 @@ class PostDetailView(View):
         context = {
             "post":post,
             "comment_form":CommentForm(),
-            "post_tags":post.tags.all().order_by("-id"),
+            
             
             }
         comment_form = CommentForm(request.POST)
@@ -65,7 +65,7 @@ class PostListView(ListView):
     model = Post
     ordering = ["-updated"]
     context_object_name = "posts"
-    template_name = "blog/all-posts.html.html"
+    template_name = "blog/all-posts.html"
 
 
 # class PostDeleteView(DeleteView):

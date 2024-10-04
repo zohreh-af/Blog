@@ -2,21 +2,21 @@ from django.db import models
 from django.urls import reverse
 from django.core.validators import MaxValueValidator,MinValueValidator
 from django.contrib.auth.models import User
-class Tag(models.Model):
-    caption = models.CharField(max_length=20)
-    def __str__(self):
-        return self.caption
+# class Tag(models.Model):
+#     caption = models.CharField(max_length=20)
+#     def __str__(self):
+#         return self.caption
 
-    class Meta:
-        db_table = ''
-        managed = True
-        verbose_name = 'تگ'
-        verbose_name_plural = 'تگ ها'
+#     class Meta:
+#         db_table = ''
+#         managed = True
+#         verbose_name = 'تگ'
+#         verbose_name_plural = 'تگ ها'
         
 class Post(models.Model):
     title = models.CharField(max_length=150,null=False,verbose_name="عنوان")
     user = models.ForeignKey(User, null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="posts")
-    tags = models.ManyToManyField(Tag, verbose_name=("تگ"),)
+    #tags = models.ManyToManyField(Tag, verbose_name=("تگ"),)
     slug = models.SlugField(default="",null=False,unique=True,db_index=True,verbose_name="اسلاگ")
     excrept = models.TextField(max_length=300,verbose_name="تیتر دوم")
     description = models.TextField(verbose_name="متن")
@@ -36,14 +36,14 @@ class Post(models.Model):
         return reverse("blog:post_detail", kwargs={"slug": self.slug})
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="usercomments")
-    post = models.ForeignKey(Post,related_name="postcomments" ,verbose_name=("پست "), on_delete=models.CASCADE)#manyToOne
-    comment = models.TextField(verbose_name="متن کامنت")
-    is_reply = models.BooleanField(verbose_name="پاسخ است؟")
-    reply = models.ForeignKey('Comment', verbose_name='پاسخ', on_delete=models.CASCADE,related_name='')
-
+    user = models.ForeignKey(User, null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="ucomment")
+    post = models.ForeignKey(Post,related_name="pcomment" ,verbose_name=("پست "), on_delete=models.CASCADE)#manyToOne
+    body = models.TextField(max_length=400,default=None)
+    is_reply = models.BooleanField(verbose_name="پاسخ است؟",default=False)
+    reply = models.ForeignKey('self', on_delete=models.CASCADE, related_name='rcomments', blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True,null=True)
     def __str__(self):
-        return self.username - self.post__title
+        return f'{self.username} - {self.body[:30]}'
 
     class Meta:
         db_table = ''

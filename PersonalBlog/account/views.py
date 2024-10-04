@@ -1,13 +1,11 @@
 from pyexpat.errors import messages
-from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView,DetailView
+from django.views.generic import CreateView
 #from .models import CostomUser as User
-from PersonalBlog.account.models import Relations
-from blog.models import Post
+from .models import Relations
 from django.contrib import messages
 from .forms import UserRegisterForm, UserLoginForm
 from django.contrib.auth.models import User

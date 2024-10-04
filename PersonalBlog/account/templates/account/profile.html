@@ -25,7 +25,7 @@
     <h2>{{author.username|title}}</h2>
     {% if request.user.id != author.id and not is_following %}
     <a href="{% url 'account:user_follow' author.id %}" class="btn btn-primary">Follow</a>
-    {% elif %}
+    {% elif request.user.id != author.id and is_following %}
     <a href="{% url 'account:user_follow' author.id %}" class="btn btn-success">Unfollow</a>
     {% endif %}
     <article>

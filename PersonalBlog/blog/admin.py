@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import  Post, Tag,Comment
+from .models import  Post,Comment
 
 # Register your models here.
 
@@ -10,7 +10,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ("user","post")
 
 
-admin.site.register(Tag)
+#admin.site.register(Tag)
 
     
 @admin.register(Post)

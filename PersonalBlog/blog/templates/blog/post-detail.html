@@ -40,9 +40,6 @@
   <a href="{% url 'blog:post_update' post.slug %}" class="btn btn-info">Update</a>
 {% endif %}
   <div>
-    {% for tag in post_tags %}
-      <span class="tag">{{ tags.caption }}</span>
-    {% endfor %}
   </div>
   <div id="read-later">
    <form action="" method="POST">
