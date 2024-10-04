@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView,DetailView
 #from .models import CostomUser as User
+from PersonalBlog.account.models import Relations
 from blog.models import Post
 from django.contrib import messages
 from .forms import UserRegisterForm, UserLoginForm
@@ -79,16 +80,19 @@ class UserLogoutView(View):
         messages.success(request,"You Loged Out!","success")
         return redirect("account:login")
 
-
-
-  
   
 class ProfileView(LoginRequiredMixin,View):
     class_template = "account/profile.html"
     def get(self,request,user_id):
         user = get_object_or_404(User,pk=user_id)
         posts = user.posts.all()
-        return render(request,self.class_template,{'posts':posts,"author":user})
+        is_following = False
+        relation = Relations.objects.filter(from_user=request.user.id,to_user=user)
+        if relation.exists():
+            is_following = True
+        
+        return render(request,self.class_template,{
+            'posts':posts,"author":user,"is_following":is_following})
     
 
 # class ProfileView(LoginRequiredMixin,DetailView):
@@ -99,3 +103,28 @@ class ProfileView(LoginRequiredMixin,View):
 #         #context["authors_posts"] = Post.objects.filter(author = self.id).order_by("-published")
 #         context["posts"] = Post.authors.all().order_by("-published")
 #         return context
+class UserFollowView(LoginRequiredMixin,View):
+    def get(self,request,user_id):
+        to_user = get_object_or_404(User,user_id)
+        relation = Relations.objects.filter(from_user=request.user,to_user=to_user)
+        if relation.exists():
+           Relations(from_user=request.user,to_user=to_user).delete()
+           messages.error(request,"You unfollowed user!","danger")
+        else:
+            Relations(from_user=request.user,to_user=to_user).save()
+            messages.success(request,"User Followed!","success")
+        return redirect("account:profile",user_id)
+
+# class UserUnfollowView(LoginRequiredMixin,View):
+#     def get(self,request,user_id):
+#         to_user = get_object_or_404(User,user_id)
+#         relation = Relations.objects.filter(from_user=request.user,to_user=to_user)
+#         if relation.exists():
+#             Relations(from_user=request.user,to_user=to_user).delete()
+#             messages.success(request,"User unfollowed!","success")
+            
+#         else:
+#             messages.error(request,"You have not followed this user!","danger")  
+#         return redirect("account:profile",user_id)
+            
+

@@ -7,7 +7,7 @@ urlpatterns = [
     path("logout/",views.UserLogoutView.as_view(),name="logout"),
     path("profile/<int:user_id>/",views.ProfileView.as_view(),name="profile"),
     path("follow/<int:user_id>",views.UserFollowView.as_view(),name='user_follow'),
-    path("unfollow/<int:user_id>",views.UserUnfollowView.as_view(),name='user_unfollow'),
+    #path("unfollow/<int:user_id>",views.UserUnfollowView.as_view(),name='user_unfollow'),
     
    
     

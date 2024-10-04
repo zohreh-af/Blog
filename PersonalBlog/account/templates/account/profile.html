@@ -23,6 +23,11 @@
         
     {% endif %}
     <h2>{{author.username|title}}</h2>
+    {% if request.user.id != author.id and not is_following %}
+    <a href="{% url 'account:user_follow' author.id %}" class="btn btn-primary">Follow</a>
+    {% elif %}
+    <a href="{% url 'account:user_follow' author.id %}" class="btn btn-success">Unfollow</a>
+    {% endif %}
     <article>
 
         <address> {{author.username}}</address>
