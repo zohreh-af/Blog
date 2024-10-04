@@ -1,6 +1,6 @@
-# from django.db import models
-# from django.contrib.auth.models import AbstractUser
-# from django.urls import reverse
+from django.db import models
+from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 # class CostomUser(AbstractUser):
@@ -22,3 +22,18 @@
 #     def get_absolute_url(self):
 #         return reverse("auther_detail", kwargs={"pk": self.id})
 
+
+class Relations(models.Model):
+    from_user = models.ForeignKey(User, verbose_name='follower', on_delete=models.CASCADE,related_name='follower')
+    to_user = models.ForeignKey(User, verbose_name='following', on_delete=models.CASCADE,related_name='following')
+    created = models.DateTimeField( auto_now_add=True)
+
+
+    def __str__(self):
+        f'{self.from_user} followed {self.to_user}'
+
+    class Meta:
+        db_table = ''
+        managed = True
+        verbose_name = 'Relation'
+        verbose_name_plural = 'Relations'
