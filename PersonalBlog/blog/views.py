@@ -1,4 +1,5 @@
 
+from typing import Any
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -10,6 +11,9 @@ from django.urls import reverse
 from django.contrib.auth.models import User 
 from django.utils.text import slugify
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
 
 class HomepageListView(ListView):
     template_name = "blog/index.html"
@@ -23,38 +27,36 @@ class HomepageListView(ListView):
 
     
 class PostDetailView(View):
-    
+    def setup(self, request, *args, **kwargs):
+        self.post_instance = get_object_or_404(Post,kwargs['slug'])
+        return super().setup(request, *args, **kwargs)
     def get(self,request,slug):
-        favorite_id = request.session["fave_post"]
-        post = Post.objects.get(slug=slug)
-        is_favorite = favorite_id==str(post.id)
+        #favorite_id = request.session["fave_post"]
+        #is_favorite = favorite_id==str(post.id)
+        comments = Post.pcomment.filter(is_reply=False)
         context = {
-            "post":post,
+            "post":self.post_instance,
             "comment_form":CommentForm(),
-            
-            "comments":post.comments.all(),
-            "is_favorite":is_favorite,
-            
+            "comments":comments,
             }
         return render (request,"blog/post-detail.html.html",context)
+    @method_decorator(login_required)
     def post(self,request,slug):
-        post = Post.objects.get(slug=slug)
         #post_id = request.POST["post_id"]
-        request.session["fave_post"] = post.id
+       # request.session["fave_post"] = self.post_instance.id
         context = {
-            "post":post,
+            "post":self.post_instance,
             "comment_form":CommentForm(),
-            
-            
             }
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            comment.post = post
+            comment.user = request.user
+            comment.post = self.post_instance
             comment.save()
-            return HttpResponseRedirect(reverse("post_detail",args=[slug]))
-        return render (request,"blog/post-detail.html.html",context)
-    # def get_context_data(self, **kwargs):
+            messages.success(request, 'your comment submitted successfully', 'success')
+            return redirect('blog:post_detail',self.post_instance.slug)
+# def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
     #     context["comment_form"] = CommentForm()
     #     context["post_tags"] = self.object.tag.all()

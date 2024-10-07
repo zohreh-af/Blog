@@ -6,14 +6,14 @@ class CommentForm(forms.ModelForm):
     
     class Meta:
         model = Comment
-        exclude = ["post","user"]
+        fields = ('body',)
         labels = {
             
-            "comment":_("Your comment:"),
+            "body":_("Your comment:"),
         }
         
         help_texts = {
-            "comment": _("What is your comment?."),
+            "body": _("What is your comment?."),
         }
 
 class CreatePostForm(forms.ModelForm):

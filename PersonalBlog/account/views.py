@@ -1,4 +1,5 @@
 from pyexpat.errors import messages
+from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -50,6 +51,9 @@ class SignUpView(CreateView):
 class UserLoginView(View):
     class_form = UserLoginForm
     class_template = "account/login.html"
+    def setup(self, request: HttpRequest, *args, **kwargs) :
+        self.next = request.GET.get('next')
+        return super().setup(request, *args, **kwargs)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect("account:profile",request.user.id)
@@ -67,6 +71,8 @@ class UserLoginView(View):
             if user is not None:
                 login(request,user)
                 messages.success(request,"successfully login",'success')
+                if self.next:
+                    return redirect(self.next)
                 return redirect('account:profile',user.id)
         messages.error(request," login failed!",'warning')
         return render(request,self.class_template,{'form':form}) 

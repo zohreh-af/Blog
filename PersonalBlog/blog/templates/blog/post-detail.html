@@ -62,12 +62,20 @@
 </main>
 
 <section id="comments">
+  
   <ul>
     {% for comment in comments %}
+    <p>Comments {{comments.count}} </p>
       <li>
-        <h2>{{ comment.user_name }}</h2>
-        <p>{{ comment.text|linebreaks }}</p>
+        <h2>{{ comment.user_name }}|{{comment.created|timesince}}</h2>
+        <p>{{ comment.body|linebreaks }}</p>
+        {% for reply in comment.rcomments.all %}
+        <p class="bg-primary p-3 m-2">{{ reply.user }} <br/> {{ reply.body }}</p>
+        {% endfor %}
       </li>
+      
+      {% empty %}
+        <p>No Comments yet!</p>
     {% endfor %}
   </ul>
 </section>
