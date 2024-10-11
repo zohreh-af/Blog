@@ -34,6 +34,13 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse("blog:post_detail", kwargs={"slug": self.slug})
+    def Like_Count(self):
+        return self.pvote.Count()
+    def User_Have_Liked(self,user):
+        user_like = User.uvote.filter(post=self)
+        if user_like.exists():
+            return True
+        return False
 
 class Comment(models.Model):
     user = models.ForeignKey(User, null=True ,verbose_name=("نویسنده"), on_delete=models.SET_NULL, related_name="ucomment")

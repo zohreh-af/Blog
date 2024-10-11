@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import DetailView,TemplateView,ListView,DeleteView
-from .models import  Post,Comment
-from .forms import CommentForm, CommentReplyForm, CreatePostForm
+from .models import  Post,Comment, Vote
+from .forms import CommentForm, CommentReplyForm, CreatePostForm, PostSearchForm
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import User 
@@ -15,42 +15,37 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
-class HomepageListView(ListView):
-    template_name = "blog/index.html"
-    model = Post
-    context_object_name = "posts"
-    ordering = ["-updated"]
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        data = queryset[:3]
-        return data
-
-    
+class HomepageListView(View):
+    class_form = PostSearchForm
+    def get(self,request):
+        post = post.objects.all().order_by("-created")[:10]
+        if request.GET.get('search'):
+            post =  post.objects.filter(body__icontain=request.GET.get('search'))
+        return render (request,'blog/index.html',{'posts':post,'form':self.class_form})
 class PostDetailView(View):
     class_form = CommentForm
     class_form_reply = CommentReplyForm
     def setup(self, request, *args, **kwargs):
         self.post_instance = get_object_or_404(Post,kwargs['slug'])
         return super().setup(request, *args, **kwargs)
-    def get(self,request,slug):
+    def get(self,request, *args, **kwargs):
         #favorite_id = request.session["fave_post"]
         #is_favorite = favorite_id==str(post.id)
         comments = Post.pcomment.filter(is_reply=False)
+        can_like = False
+        if request.user.authenticated and self.post_instance.User_Have_Liked(request.user):
+            can_like = True
+    
         context = {
             "post":self.post_instance,
             "comment_form":self.class_form,
             "comment_reply_form":self.class_form_reply,
             "comments":comments,
+            "can_like":can_like
             }
         return render (request,"blog/post-detail.html.html",context)
     @method_decorator(login_required)
-    def post(self,request,slug):
-        #post_id = request.POST["post_id"]
-       # request.session["fave_post"] = self.post_instance.id
-        context = {
-            "post":self.post_instance,
-            "comment_form":CommentForm(),
-            }
+    def post(self,request, *args, **kwargs):
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
@@ -65,7 +60,7 @@ class PostDetailView(View):
     #     context["post_tags"] = self.object.tag.all()
     #     return context
     # #dont worry about slug :D 
-class AddReplyView(View):
+class PostAddReplyView(LoginRequiredMixin,View):
     class_form = CommentReplyForm
     def post(self,request,post_id,comment_id):
         post = get_object_or_404(Post,pk=post_id)
@@ -80,7 +75,17 @@ class AddReplyView(View):
             reply.save()
             messages.success(request, 'your reply submitted successfully', 'success')
         return redirect('blog:post_detail', post.slug)
-
+class PostLikeView(LoginRequiredMixin,View):
+    def Post(self,request,post_id):
+        post = get_object_or_404(Post,pk=post_id)
+        like = Vote.objects.filter(post=post,user=request.user)
+        if like.is_exist():
+            like.delete()
+            messages.danger(request,"like retrived!","danger")
+        else:
+            Vote.object.create(post=post,user=request.user)
+            messages.success(request,"yo liked the post!","success")
+            return redirect ("blog:post_detail",post.slug)
 class PostListView(ListView):
     model = Post
     ordering = ["-updated"]
