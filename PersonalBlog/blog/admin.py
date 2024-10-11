@@ -17,6 +17,6 @@ class CommentAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug" : ("title",)}
     #list_filter = ["published","author","tags"]
-    list_display = ["title","user","slug","image"]
+    list_display = ["title","user","slug",]
     search_fields = ('title', 'user__username')
 

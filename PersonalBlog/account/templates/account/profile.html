@@ -20,6 +20,7 @@
     
     {% if request.user.id == user.id %}
         <a href="{% url 'blog:create_post' %}" class="btn btn-primary">Create</a>
+        <a href="{% url 'account:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
         
     {% endif %}
     <h2>{{author.username|title}}</h2>

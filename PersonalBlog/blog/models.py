@@ -22,7 +22,7 @@ class Post(models.Model):
     description = models.TextField(verbose_name="متن")
     published = models.DateTimeField(auto_now_add=True,verbose_name="انتشار")
     updated = models.DateTimeField(auto_now=True,verbose_name="اپدیت" )
-    image = models.ImageField(upload_to="update",verbose_name="ادرس عکس")
+    #image = models.ImageField(upload_to="update",verbose_name="ادرس عکس")
     
 
     class Meta:
@@ -35,9 +35,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("blog:post_detail", kwargs={"slug": self.slug})
     def Like_Count(self):
-        return self.pvote.Count()
+        return self.pvote.count()
     def User_Have_Liked(self,user):
-        user_like = User.uvote.filter(post=self)
+        user_like = user.uvote.filter(post=self)
         if user_like.exists():
             return True
         return False

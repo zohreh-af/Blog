@@ -12,20 +12,22 @@ class CommentForm(forms.ModelForm):
             "body":_("Your comment:"),
         }
         
-        help_texts = {
-            "body": _("What is your comment?."),
-        }
+
 
 class CreatePostForm(forms.ModelForm):
     #tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple, required=True)
     class Meta:
         model = Post
-        fields = ("title","excrept","description","image")
+        fields = ("title","excrept","description")
 class CommentReplyForm(forms.ModelForm):
             
     class Meta:
         model = Comment
         fields = ("body",)
+        labels = {
+            
+            "body":_("Your reply to comment:"),
+        }
         
 class PostSearchForm(forms.Form):
     search = forms.CharField()

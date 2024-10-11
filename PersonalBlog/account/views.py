@@ -34,7 +34,7 @@ class UserRegisterView(View):
         return render(request,self.class_template,{'form':form}) 
 
 class EditUserView(LoginRequiredMixin,View):
-    class_template = "blog/edit_profile.html"
+    class_template = "account/edit_profile.html"
     class_form = EditUserForm
     def get(self,request):
         form = self.class_form(instance=request.user.profile,initial={'email':request.user.email})

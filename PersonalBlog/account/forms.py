@@ -3,7 +3,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from PersonalBlog.account.models import Profile
+from .models import Profile
 
 
 class UserRegisterForm(forms.Form):
