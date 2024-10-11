@@ -8,7 +8,7 @@ urlpatterns = [
     path("delete_post/<slug:slug>",views.DeleteView.as_view(),name="delete_post"),
     path("create_post/",views.CreatePostView.as_view(),name="create_post"),
     path("update_posts/<slug:slug>",views.UpdatePostView.as_view(),name="update_post"),
-    
+    path('reply/<int:post_id>/<int:comment_id>',views.AddReplyView.as_view(),name="add_reply")
     
     
 ]

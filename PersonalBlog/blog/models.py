@@ -62,3 +62,4 @@ class Vote(models.Model):
         managed = True
         verbose_name = 'Vote'
         verbose_name_plural = 'Votes'
+

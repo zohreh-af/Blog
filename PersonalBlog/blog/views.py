@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import DetailView,TemplateView,ListView,DeleteView
-from .models import  Post
-from .forms import CommentForm, CreatePostForm
+from .models import  Post,Comment
+from .forms import CommentForm, CommentReplyForm, CreatePostForm
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import User 
@@ -27,6 +27,8 @@ class HomepageListView(ListView):
 
     
 class PostDetailView(View):
+    class_form = CommentForm
+    class_form_reply = CommentReplyForm
     def setup(self, request, *args, **kwargs):
         self.post_instance = get_object_or_404(Post,kwargs['slug'])
         return super().setup(request, *args, **kwargs)
@@ -36,7 +38,8 @@ class PostDetailView(View):
         comments = Post.pcomment.filter(is_reply=False)
         context = {
             "post":self.post_instance,
-            "comment_form":CommentForm(),
+            "comment_form":self.class_form,
+            "comment_reply_form":self.class_form_reply,
             "comments":comments,
             }
         return render (request,"blog/post-detail.html.html",context)
@@ -62,6 +65,21 @@ class PostDetailView(View):
     #     context["post_tags"] = self.object.tag.all()
     #     return context
     # #dont worry about slug :D 
+class AddReplyView(View):
+    class_form = CommentReplyForm
+    def post(self,request,post_id,comment_id):
+        post = get_object_or_404(Post,pk=post_id)
+        comment = get_object_or_404(Comment,pk=comment_id)
+        form = self.class_form(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.post = post
+            reply.user = request.user
+            reply.is_reply = True
+            reply.reply = comment
+            reply.save()
+            messages.success(request, 'your reply submitted successfully', 'success')
+        return redirect('blog:post_detail', post.slug)
 
 class PostListView(ListView):
     model = Post
