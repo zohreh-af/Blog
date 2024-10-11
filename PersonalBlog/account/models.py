@@ -37,3 +37,8 @@ class Relations(models.Model):
         managed = True
         verbose_name = 'Relation'
         verbose_name_plural = 'Relations'
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, verbose_name=("کاربر"), on_delete=models.CASCADE)
+    age = models.PositiveSmallIntegerField(default=0)
+    bio = models.TextField(null=True,blank=True)

@@ -8,7 +8,7 @@ from django.views.generic import CreateView
 #from .models import CostomUser as User
 from .models import Relations
 from django.contrib import messages
-from .forms import UserRegisterForm, UserLoginForm
+from .forms import EditUserForm, UserRegisterForm, UserLoginForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -33,6 +33,20 @@ class UserRegisterView(View):
             return redirect('account:login')
         return render(request,self.class_template,{'form':form}) 
 
+class EditUserView(LoginRequiredMixin,View):
+    class_template = "blog/edit_profile.html"
+    class_form = EditUserForm
+    def get(self,request):
+        form = self.class_form(instance=request.user.profile,initial={'email':request.user.email})
+        return render(request,self.class_template,{'form':form})
+    def post(self,request):
+        form = self.class_form(request.POST,instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            request.user.email = form.cleaned_data['email']
+            request.user.save()
+            messages.success(request,"new edits on profile saved!",'success')
+            return redirect('account:profile',request.user.id)
 
 class SignUpView(CreateView):
   

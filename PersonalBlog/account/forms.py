@@ -3,6 +3,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from PersonalBlog.account.models import Profile
+
 
 class UserRegisterForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -27,3 +29,9 @@ class UserRegisterForm(forms.Form):
 class UserLoginForm(forms.Form):
 	username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
 	password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+
+class EditUserForm(forms.ModelForm):
+    email = forms.EmailField(required=False)
+    class Meta:
+        model = Profile
+        fields = ("age","bio")
